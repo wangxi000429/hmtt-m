@@ -9,7 +9,7 @@ export const getUser = () => {
 export const setUser = (user) => {
   window.localStorage.setItem(USER_KEY, JSON.stringify(user))
 }
+// 删除token
 export const delUser = () => {
   window.localStorage.removeItem(USER_KEY)
 }
-// 删除token

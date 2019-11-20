@@ -1,6 +1,7 @@
 <template>
   <div class='container'>
-    <van-nav-bar title="搜索结果" left-arrow @click-left="$router.back()" class="search" />
+    <van-nav-bar title="黑马头条" left-arrow @click-left="$router.back()" class="search" />
+
   </div>
 </template>
 
