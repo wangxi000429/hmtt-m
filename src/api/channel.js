@@ -49,3 +49,62 @@ export const getMyChannels = () => {
 export const getAllChannels = () => {
   return request('app/v1_0/channels', 'get')
 }
+
+/**
+ * 删除频道
+ * @param {Integer} channelId --频道id
+ */
+export const delChannel = (channelId) => {
+  // 判断是否登录
+  // 登录  调用接口进行删除
+  // 未登录  删除本地存储的频道中id对应的那一项
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { user } = store.state
+      if (user.token) {
+      // 登录
+        await request(`app/v1_0/user/channels/${channelId}`, 'delete')
+        resolve()
+      } else {
+      // 未登录
+        const str = window.localStorage.getItem(CHANNEL_KEY)
+        const localChannels = JSON.parse(str) // 数组类型的频道数据
+        const index = localChannels.findIndex(item => item.id === channelId)
+        localChannels.splice(index, 1)
+        window.localStorage.setItem(CHANNEL_KEY, JSON.stringify(localChannels))
+        resolve()
+      }
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
+/**
+ * 添加频道
+ * @param {Array} orderChannels - 排序好的频道数组
+ */
+export const addChannel = (orderChannels) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { user } = store.state
+      if (user.token) {
+      // 后台添加
+        await request(`app/v1_0/user/channels`, 'put', {
+          channels: orderChannels
+        })
+        resolve()
+      } else {
+      // 本地添加
+        const str = window.localStorage.getItem(CHANNEL_KEY)
+        const localChannels = JSON.parse(str) // 数组类型的频道数据
+        const { id, name } = orderChannels(localChannels - 1)
+        localChannels.push({ id, name })
+        window.localStorage.setItem(CHANNEL_KEY, JSON.stringify(localChannels))
+        resolve()
+      }
+    } catch (e) {
+      reject(e)
+    }
+  })
+}

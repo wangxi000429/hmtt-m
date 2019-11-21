@@ -61,7 +61,7 @@
     ></more-action>
 
     <!-- 使用组件 频道编辑 -->
-    <channel-edit v-model="showChannelEdit" :myChannels='myChannels' :activeIndex.sync='activeIndex'
+    <channel-edit @on-delete='changeChannel()' v-model="showChannelEdit" :myChannels='myChannels' :activeIndex.sync='activeIndex'
 
     ></channel-edit>
   </div>

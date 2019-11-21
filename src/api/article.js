@@ -35,3 +35,11 @@ export const report = (articleId, type) => {
     type
   })
 }
+
+/**
+ * 联想建议
+ * @param {String} q - 请求的前缀词句
+ */
+export const suggest = (q) => {
+  return request('app/v1_0/suggestion', 'get', { q })
+}
